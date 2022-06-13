@@ -1,0 +1,36 @@
+syntax = "proto3";
+package myproto;
+
+message KvPair {
+    Key key = 1;
+    Value val = 2;
+}
+
+message Key {
+    string key = 1;
+}
+
+message Value {
+    string val = 1;
+}
+
+message ReplyState {
+    string reply_info = 1;
+    KvPair kvpair = 2;
+}
+
+message RequestState {
+    string request_info = 1;
+}
+
+service MyRpc {
+    //simple rpc
+    rpc SetKv(KvPair) returns (ReplyState) {}
+    rpc GetKv(Key) returns (ReplyState) {}
+
+    // A server-to-client streaming RPC.
+    rpc GetKvList(RequestState) returns (stream KvPair) {}
+
+    // A client-to-server streaming RPC.
+    rpc SetKvList(stream KvPair) returns (ReplyState) {}
+}
